@@ -1,0 +1,4 @@
+zone "your_domain.ddns.net" {
+    type master;
+    file "/etc/bind/db.your_domain.ddns.net";
+};
