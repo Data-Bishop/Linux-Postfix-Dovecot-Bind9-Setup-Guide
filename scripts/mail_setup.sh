@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # Exit on any error
 set -e
@@ -10,8 +10,8 @@ apt update && apt upgrade -y
 apt install -y postfix dovecot-core dovecot-imapd dovecot-pop3d bind9 bind9utils bind9-doc
 
 # Set variables
-DOMAIN="databishop.ddns.net"  # Replace with your No-IP domain
-EMAIL="abasifrekenkanang@gmail.com"   # Replace with your email
+DOMAIN="your_domain.ddns.net"  # Replace with your No-IP domain
+EMAIL="your_email@example.com"   # Replace with your email
 SERVER_IP=$(curl -s ifconfig.me)  # Get public IP address
 
 # Configure Postfix
@@ -62,11 +62,20 @@ EOF
 # Restart BIND9
 systemctl restart bind9
 
-# Install No-IP DUC (Dynamic Update Client)
+# Install build tools and No-IP DUC (Dynamic Update Client)
+apt install -y build-essential
+
+# Check if noip2 is already installed and running
+if pgrep noip2 > /dev/null; then
+    echo "noip2 is already running. Stopping it..."
+    killall noip2
+fi
+
 cd /usr/local/src/
-curl http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
 tar xzf noip-duc-linux.tar.gz
 cd noip-2.1.9-1/
+make clean
 make
 make install
 
@@ -75,6 +84,9 @@ make install
 
 # Start No-IP DUC
 /usr/local/bin/noip2
+
+# Install mailutils
+apt install -y mailutils
 
 # Send a test email
 echo "This is a test email from your new mail server." | mail -s "Test Email" $EMAIL
