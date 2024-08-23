@@ -83,3 +83,59 @@ sudo /usr/local/bin/noip2 -C
 
 Follow the prompts to enter your No-IP account details and configure the client.
 
+### 7. Configure Gmail as a Relay (optional)
+If you want to use Gmail as a relay for outgoing emails:
+
+Create a file for Gmail credentials:
+```bash
+sudo nano /etc/postfix/sasl_passwd
+```
+
+Add the line from **configs/sasl_passwd**, replacing with your actual Gmail address and app password.
+
+Secure the file and create the hash database:
+```bash
+sudo chmod 600 /etc/postfix/sasl_passwd
+sudo postmap /etc/postfix/sasl_passwd
+```
+
+### 8. Restart Services
+
+```bash
+sudo systemctl restart postfix dovecot bind9
+sudo /usr/local/bin/noip2
+```
+
+### 9. Test the Setup
+
+Install mailutils:
+```bash
+sudo apt install -y mailutils
+```
+
+Send a test email:
+```bash
+echo "This is a test email from your new mail server." | mail -s "Test Email" your_email@example.com
+```
+
+## Security Considerations
+
+- Keep your system and all installed packages up to date
+- Use strong passwords for all accounts
+- Consider implementing SPF, DKIM, and DMARC for better email authentication
+- Set up a firewall (e.g., UFW) and only allow necessary ports
+- Regularly monitor your server logs for any suspicious activity
+
+## Troubleshooting
+
+- Check /var/log/mail.log for any error messages related to Postfix or Dovecot
+- Ensure all configuration files have the correct permissions
+- Verify that your domain's DNS records are set up correctly
+- If emails are not being sent, check if your ISP is blocking outgoing SMTP traffic
+
+## Maintenance
+
+- Regularly update your system and installed packages
+- Monitor disk usage, especially in mail directories
+- Backup your configuration files and email data regularly
+- Keep your No-IP dynamic DNS client running and up to date
