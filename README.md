@@ -1,5 +1,10 @@
 # Linux Mail Server Setup with Postfix, Dovecot and Bind9
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+![Made with Bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg)
+
 This repository contains a guide and configuration files for setting up a robust, self-hosted mail server on Linux systems using Postfix as the Mail Transfer Agent (MTA) and Dovecot as the IMAP/POP3 server.
 
 ## Prerequisites
